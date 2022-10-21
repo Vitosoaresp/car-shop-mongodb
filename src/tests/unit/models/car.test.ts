@@ -16,8 +16,10 @@ describe('Car model', () => {
     sinon.restore();
   });
 
-  it('successfully created', async () => {
-    const newCar = await carModel.create(mockCar);
-    expect(newCar).to.be.deep.equal(mockCarWithId);
+  describe('create', () => {
+    it('successfully created', async () => {
+      const newCar = await carModel.create(mockCar);
+      expect(newCar).to.be.deep.equal(mockCarWithId);
+    });
   });
 });
