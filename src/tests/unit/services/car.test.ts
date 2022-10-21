@@ -10,6 +10,7 @@ describe('Car service', () => {
   const carService = new CarService(carModel);
   before(async () => {
     sinon.stub(carModel, 'create').resolves(mockCarWithId);
+    sinon.stub(carModel, 'read').resolves([mockCarWithId]);
   });
 
   after(() => {
@@ -29,6 +30,14 @@ describe('Car service', () => {
         error = err;
       }
       expect(error).to.be.instanceOf(ZodError);
+    });
+  });
+
+  describe('read', () => {
+    it('Sucess', async () => {
+      const cars = await carService.read();
+      expect(cars).to.be.an('array');
+      expect(cars).to.be.deep.equal([mockCarWithId]);
     });
   });
 });
