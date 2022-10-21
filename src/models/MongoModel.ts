@@ -10,27 +10,27 @@ abstract class MongoModel<T> implements IModel<T> {
     this._model = model;
   }
 
-  public read(): Promise<T[]> {
-    return this._model.find().exec();
+  public async read(): Promise<T[]> {
+    return this._model.find();
   }
 
-  public readOne(_id: string): Promise<T | null> {
+  public async readOne(_id: string): Promise<T | null> {
     if (!isValidObjectId(_id)) throw Error(INVALID_ID);
-    return this._model.findById(_id).exec();
+    return this._model.findById(_id);
   }
 
-  public create(obj: T): Promise<T> {
+  public async create(obj: T): Promise<T> {
     return this._model.create(obj);
   }
 
-  public update(_id: string, obj: Partial<T>): Promise<T | null> {
+  public async update(_id: string, obj: Partial<T>): Promise<T | null> {
     if (!isValidObjectId(_id)) throw Error(INVALID_ID);
-    return this._model.findByIdAndUpdate({ _id }, obj).exec();
+    return this._model.findByIdAndUpdate({ _id }, obj);
   }
 
-  public delete(_id: string): Promise<T | null> {
+  public async delete(_id: string): Promise<T | null> {
     if (!isValidObjectId(_id)) throw Error(INVALID_ID);
-    return this._model.findByIdAndDelete({ _id }).exec();
+    return this._model.findByIdAndDelete({ _id });
   }
 }
 
