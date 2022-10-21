@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { ErrorTypes } from '../../../errors/catalog';
+import { ZodError } from 'zod';
 import CarModel from '../../../models/Car';
 import CarService from '../../../services/Car';
 import { mockCar, mockCarWithId } from '../../mocks/car';
@@ -28,15 +28,15 @@ describe('Car service', () => {
       const newCar = await carService.create(mockCar);
       expect(newCar).to.be.deep.equal(mockCarWithId);
     });
-    // it('Failure', async () => {
-    //   let error;
-    //   try {
-    //     await carService.create({});
-    //   } catch (err) {
-    //     error = err;
-    //   }
-    //   expect(error).to.be.instanceOf(ZodError);
-    // });
+    it('Failure', async () => {
+      let error;
+      try {
+        await carService.create({});
+      } catch (err) {
+        error = err;
+      }
+      expect(error).to.be.instanceOf(ZodError);
+    });
   });
 
   describe('read', () => {
@@ -53,15 +53,15 @@ describe('Car service', () => {
       expect(cars).to.be.deep.equal(mockCarWithId);
     });
 
-    it('Invalid id', async () => {
-      let error;
-      try {
-        await carService.readOne('invalid id');
-      } catch (err: any) {
-        console.log(err);
-        error = err;
-      }
-      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidMongoId);
-    });
+    //   it('Invalid id', async () => {
+    //     let error;
+    //     try {
+    //       await carService.readOne('invalid id');
+    //     } catch (err: any) {
+    //       console.log(err);
+    //       error = err;
+    //     }
+    //     expect(error.message).to.be.deep.equal(ErrorTypes.InvalidMongoId);
+    //   });
   });
 });
