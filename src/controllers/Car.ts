@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ErrorTypes } from '../errors/catalog';
 import { ICar } from '../interfaces/ICar';
 import IService from '../interfaces/IService';
 
@@ -12,6 +13,12 @@ export default class CarController {
 
   public async read(req: Request, res: Response<ICar[] | []>) {
     const result = await this._service.read();
+    return res.status(200).json(result);
+  }
+
+  public async readOne(req: Request, res: Response<ICar>) {
+    const result = await this._service.readOne(req.params.id);
+    if (!result) throw Error(ErrorTypes.EntityNotFound);
     return res.status(200).json(result);
   }
 }
