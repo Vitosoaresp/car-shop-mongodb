@@ -1,7 +1,7 @@
 export enum ErrorTypes {
   EntityNotFound = 'EntityNotFound',
   InvalidMongoId = 'InvalidMongoId',
-  InvalidLengthId = 'invalidLengthId',
+  InvalidLengthId = 'InvalidLengthId',
   InvalidBody = 'InvalidBody',
 }
 
@@ -23,7 +23,7 @@ export const errorCatalog: ErrorCatalog = {
     message: 'Object not found',
     httpStatus: 404,
   },
-  invalidLengthId: {
+  InvalidLengthId: {
     message: 'Id must have 24 hexadecimal characters',
     httpStatus: 400,
   },
