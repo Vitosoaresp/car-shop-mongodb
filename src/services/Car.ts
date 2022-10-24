@@ -32,13 +32,13 @@ export default class CarService implements IService<ICar> {
     return car;
   }
 
-  public async update(_id: string, obj: ICar): Promise<ICar | null> {
+  public async update(_id: string, obj: unknown): Promise<ICar | null> {
     if (_id.length < 24) throw new Error(ErrorTypes.InvalidLengthId);
     if (JSON.stringify(obj) === '{}') throw new Error(ErrorTypes.InvalidBody);
     const carParsed = carZodSchema.safeParse(obj);
     if (!carParsed.success) throw carParsed.error;
 
-    const car = await this._car.update(_id, obj);
+    const car = await this._car.update(_id, obj as ICar);
     if (!car) throw Error(ErrorTypes.InvalidMongoId);
     return car;
   }
