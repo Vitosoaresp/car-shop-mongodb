@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { ZodError } from 'zod';
+import { ErrorTypes } from '../../../errors/catalog';
 import CarModel from '../../../models/Car';
 import CarService from '../../../services/Car';
 import { mockCar, mockCarWithId } from '../../mocks/car';
@@ -16,6 +17,15 @@ describe('Car service', () => {
       .onCall(0)
       .resolves(mockCarWithId)
       .onCall(1)
+      .resolves(null)
+      .onCall(2)
+      .resolves(null)
+      .onCall(3)
+      .resolves(null);
+    sinon
+      .stub(carModel, 'update')
+      .onCall(0)
+      .resolves(mockCarWithId)
       .resolves(null);
   });
 
@@ -53,15 +63,73 @@ describe('Car service', () => {
       expect(cars).to.be.deep.equal(mockCarWithId);
     });
 
-    //   it('Invalid id', async () => {
-    //     let error;
-    //     try {
-    //       await carService.readOne('invalid id');
-    //     } catch (err: any) {
-    //       console.log(err);
-    //       error = err;
-    //     }
-    //     expect(error.message).to.be.deep.equal(ErrorTypes.InvalidMongoId);
-    //   });
+    it('returns an error when passing an id with size less than 24', async () => {
+      let error;
+      try {
+        await carService.readOne('invalid id');
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidLengthId);
+    });
+
+    it('should return error when passing an invalid id', async () => {
+      let error;
+      try {
+        await carService.readOne('2gdheug23123ad3r2t45t3gfs');
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidMongoId);
+    });
+  });
+
+  describe('update', () => {
+    it('Sucess updated', async () => {
+      const cars = await carService.update(mockCarWithId._id, mockCar);
+      expect(cars).to.be.deep.equal(mockCarWithId);
+    });
+
+    it('returns an error when passing an id with size less than 24', async () => {
+      let error;
+      try {
+        await carService.update('invalid id', mockCar);
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidLengthId);
+    });
+
+    it('should return error when passing an empty body', async () => {
+      let error;
+      try {
+        await carService.update(mockCarWithId._id, {});
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidBody);
+    });
+
+    it('should return error when updating car year property', async () => {
+      let error;
+      try {
+        await carService.update(mockCarWithId._id, {
+          year: 2023,
+        });
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error).to.be.instanceOf(ZodError);
+    });
+
+    it('should return error when searching for a car that does not exist', async () => {
+      let error;
+      try {
+        await carService.update('aaaaaaaaaaaaaaaaaaaaaaaa', mockCar);
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidMongoId);
+    });
   });
 });
