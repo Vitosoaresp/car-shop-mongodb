@@ -6,8 +6,4 @@ interface IModel<T> {
   delete: (id: string) => Promise<T | null>;
 }
 
-interface IParaOLintNaoChorar {
-  nada: string;
-}
-
-export { IModel, IParaOLintNaoChorar };
+export default IModel;
