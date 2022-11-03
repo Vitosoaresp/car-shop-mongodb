@@ -1,7 +1,7 @@
 import { isValidObjectId } from 'mongoose';
 import { ErrorTypes } from '../errors/catalog';
 import { carZodSchema, ICar } from '../interfaces/ICar';
-import { IModel } from '../interfaces/IModel';
+import IModel from '../interfaces/IModel';
 import IService from '../interfaces/IService';
 
 export default class CarService implements IService<ICar> {
