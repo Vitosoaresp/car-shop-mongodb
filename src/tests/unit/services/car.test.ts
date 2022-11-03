@@ -27,6 +27,11 @@ describe('Car service', () => {
       .onCall(0)
       .resolves(mockCarWithId)
       .resolves(null);
+      sinon
+      .stub(carModel, 'delete')
+      .onCall(0)
+      .resolves(mockCarWithId)
+      .resolves(null);
   });
 
   after(() => {
@@ -126,6 +131,33 @@ describe('Car service', () => {
       let error;
       try {
         await carService.update('aaaaaaaaaaaaaaaaaaaaaaaa', mockCar);
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidMongoId);
+    });
+  });
+
+  describe('delete', () => {
+    it('Sucess delete', async () => {
+      const cars = await carService.delete(mockCarWithId._id);
+      expect(cars).to.be.deep.equal(mockCarWithId);
+    });
+
+    it('returns an error when passing an id with size less than 24', async () => {
+      let error;
+      try {
+        await carService.delete('invalid id');
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.deep.equal(ErrorTypes.InvalidLengthId);
+    });
+
+    it('should return error when searching for a car that does not exist', async () => {
+      let error;
+      try {
+        await carService.delete('aaaaaaaaaaaaaaaaaaaaaaaa');
       } catch (err: any) {
         error = err;
       }

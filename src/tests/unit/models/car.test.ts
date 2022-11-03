@@ -18,6 +18,11 @@ describe('Car model', () => {
       .resolves(mockCarWithId)
       .onCall(1)
       .resolves(null);
+    sinon.stub(Model, 'findByIdAndDelete')
+      .onCall(0)
+      .resolves(mockCarWithId)
+      .onCall(1)
+      .resolves(null);
   });
 
   after(() => {
@@ -55,6 +60,23 @@ describe('Car model', () => {
       let error;
       try {
         await carModel.update('invalidId', mockCar);
+      } catch (err: any) {
+        error = err;
+      }
+      expect(error.message).to.be.equal('InvalidMongoId');
+    });
+  });
+
+  describe('delete', () => {
+    it('successfully delete', async () => {
+      const cars = await carModel.delete(mockCarWithId._id);
+      expect(cars).to.be.deep.equal(mockCarWithId);
+    });
+
+    it('invalid id', async () => {
+      let error;
+      try {
+        await carModel.delete('invalidId');
       } catch (err: any) {
         error = err;
       }
