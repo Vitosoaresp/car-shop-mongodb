@@ -76,7 +76,10 @@ Back-end:
 ## Instalando Dependências
 
 ```bash
+git clone git@github.com:Vitosoaresp/car-shop-mongodb.git
+
 cd car-shop-mongodb/ 
+
 npm install
 ``` 
 
@@ -94,6 +97,6 @@ npm install
 
 * Para rodar todos os testes:
 
-  ```
-    npm test
-  ```
+```
+  npm test
+```
