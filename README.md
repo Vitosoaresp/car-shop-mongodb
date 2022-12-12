@@ -14,9 +14,28 @@ Este projeto trata-se de uma API CRUD (create, read, uptade, delete) utilizando 
 
 > POST
 
+<details>
+    <summary>
+      <strong>O body da requição deve conter:</strong>
+    </summary>
+    
+    
+    status?: boolean | undefined;
+    model: string;
+    year: number;
+    color: string;
+    buyValue: number;
+    doorsQty: number;
+    seatsQty: number;
+    
+  </details>
+
 ```
 /cars
 ```
+  
+> PUT
+
   <details>
     <summary>
       <strong>O corpo da requição deve conter:</strong>
@@ -32,27 +51,10 @@ Este projeto trata-se de uma API CRUD (create, read, uptade, delete) utilizando 
     seatsQty: number;
     
   </details>
-  
-> PUT
 
 ```
 /cars/:id
 ```
-  <details>
-    <summary>
-      <strong>O corpo da requição deve conter:</strong>
-    </summary>
-    
-    
-    status?: boolean | undefined;
-    model: string;
-    year: number;
-    color: string;
-    buyValue: number;
-    doorsQty: number;
-    seatsQty: number;
-    
-  </details>
   
 > DELETE
 
